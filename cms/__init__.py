@@ -1,36 +1,21 @@
 from flask import Flask, render_template, abort
 
-## Application Configuration
-from cms import Type, Content
-from cms.admin.models import Type, Content, Setting, User, db
+from cms.admin.models import Content, Type, User, Setting, db
+from cms.admin import admin_bp
 
+## Application Configuration
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///{}/{}'.format(app.root_path, 'content.db')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = 'b2de7FkqvkMyqzNFzxCkgnPKIGP6i4Rc'
 #!
+
+## Models
 db.init_app(app)
+#!
 
 ## Admin Routes
-
-
-@app.route('/admin/create/<type>')
-def create(type):
-    if requested_type(type):
-        types = Type.query.all()
-        return render_template('admin/content_form.html', title='Create', types=types, type_name=type)
-    else:
-        abort(404)
-
-@app.route('/admin/users')
-def users():
-    users = User.query.all()
-    return render_template('admin/users.html', title='Users', users=users)
-
-@app.route('/admin/settings')
-def settings():
-    settings = Setting.query.all()
-    return render_template('admin/settings.html', title='Settings', settings=settings)
+app.register_blueprint(admin_bp)
 #!
 
 ## Front-end Route

@@ -1,7 +1,5 @@
-import SQLAlchemy from flask_sqlalchemy
-import datetime from datetime datetime datetime
-
-from cms import db
+from flask_sqlalchemy import SQLAlchemy
+from datetime import datetime
 
 db = SQLAlchemy()
 
